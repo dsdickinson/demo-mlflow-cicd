@@ -1,0 +1,10 @@
+artifact_location: file:///Users/steve/Development/git/ml-cicd-demo/mlruns/255732912304524893/models/m-ae954a0c2d7e4df899acc13bdf650a43/artifacts
+creation_timestamp: 1773975217714
+experiment_id: '255732912304524893'
+last_updated_timestamp: 1773975219443
+model_id: m-ae954a0c2d7e4df899acc13bdf650a43
+model_type: null
+name: model
+source_run_id: 9cffd9715d1b467c8b7afeb012d221fe
+status: 2
+status_message: null

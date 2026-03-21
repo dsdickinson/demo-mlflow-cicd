@@ -1,0 +1,16 @@
+creation_timestamp: 1773976732060
+current_stage: Production
+deployment_job_state: null
+description: ''
+last_updated_timestamp: 1773977043058
+model_id: m-ae954a0c2d7e4df899acc13bdf650a43
+name: ml-cicd-demo
+run_id: 9cffd9715d1b467c8b7afeb012d221fe
+run_link: ''
+source: models:/m-ae954a0c2d7e4df899acc13bdf650a43
+status: READY
+status_message: null
+storage_location: file:///Users/steve/Development/git/ml-cicd-demo/mlruns/255732912304524893/models/m-ae954a0c2d7e4df899acc13bdf650a43/artifacts
+user_id: null
+version: 1
+workspace: default
