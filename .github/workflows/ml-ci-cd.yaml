@@ -1,0 +1,44 @@
+name: ML CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  train-and-register:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # 🔥 Start MLflow server INSIDE CI
+    - name: Start MLflow server
+      run: |
+        mlflow server \
+          --backend-store-uri sqlite:///mlflow.db \
+          --default-artifact-root ./mlruns \
+          --host 127.0.0.1 \
+          --port 5000 &
+        sleep 5
+
+    # 🧠 Train + register model
+    - name: Train and register model
+      env:
+        MLFLOW_TRACKING_URI: http://127.0.0.1:5000
+      run: |
+        python app/train.py
+
+    # 🐳 Optional: Build Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t ml-api:latest .
