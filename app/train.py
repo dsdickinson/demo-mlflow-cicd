@@ -1,3 +1,4 @@
+import os
 import mlflow
 import mlflow.sklearn
 from mlflow.tracking import MlflowClient
@@ -7,7 +8,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-mlflow.set_tracking_uri("http://127.0.0.1:5001")  # match your MLflow UI port
+mlflow.set_tracking_uri(
+    os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5001")
+) # match your MLflow UI port
+
 mlflow.set_experiment("ml-cicd-demo")
 
 MODEL_NAME = "ml-cicd-demo"
