@@ -14,9 +14,7 @@ mlflow.set_tracking_uri(
 
 experiment_name = "ml-cicd-demo"
 
-exp = mlflow.get_experiment(experiment_name)
-if exp is None:
-    mlflow.create_experiment(experiment_name)
+mlflow.create_experiment(experiment_name)
 
 mlflow.set_experiment(experiment_name)
 
