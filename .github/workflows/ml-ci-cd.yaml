@@ -35,9 +35,16 @@ jobs:
     # 🧠 Train + register model
     - name: Train and register model
       env:
-        MLFLOW_TRACKING_URI: http://127.0.0.1:5000
+        MLFLOW_TRACKING_URI: http://127.0.0.1:5002
       run: |
         python app/train.py
+
+    # Download model
+    - name: Download production model
+      env:
+        MLFLOW_TRACKING_URI: http://127.0.0.1:5002
+      run: |
+        python app/download_model.py
 
     # 🐳 Optional: Build Docker image
     - name: Build Docker image

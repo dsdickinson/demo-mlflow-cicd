@@ -9,11 +9,12 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
 mlflow.set_tracking_uri(
-    os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5001")
+    os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5002")
 ) # match your MLflow UI port
 
 mlflow.set_experiment("ml-cicd-demo")
 
+promoted = False
 MODEL_NAME = "ml-cicd-demo"
 
 X, y = load_iris(return_X_y=True)
@@ -62,6 +63,7 @@ if prod_versions:
             version=latest_version,
             stage="Production"
         )
+        promoted = True
     else:
         print("New model is worse. Skipping promotion.")
 else:
@@ -71,5 +73,7 @@ else:
         version=latest_version,
         stage="Production"
     )
+    promoted = True
 
-print(f"Promoted version {latest_version} to Production")
+if promoted:
+    print(f"Promoted version {latest_version} to Production")

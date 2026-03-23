@@ -5,7 +5,7 @@ model = None
 def get_model():
     global model
     if model is None:
-        model = mlflow.pyfunc.load_model("models:/ml-cicd-demo/Production")
+        model = mlflow.pyfunc.load_model("model")
     return model
 
 def predict(data):

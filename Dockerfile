@@ -26,6 +26,8 @@ RUN pip install --upgrade pip && \
 # Copy app code
 COPY . .
 
+COPY model /app/model
+
 # Expose API port
 EXPOSE 8000
 
