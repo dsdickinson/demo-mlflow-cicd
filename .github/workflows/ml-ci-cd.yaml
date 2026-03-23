@@ -22,12 +22,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Clean MLflow state
+      run: rm -rf mlruns
+
     # 🧠 Train + register model
     - name: Train and register model
       env:
         MLFLOW_TRACKING_URI: file:./mlruns
       run: |
         python app/train.py
+
+    - name: Debug MLflow files
+      run: |
+        ls -R mlruns
 
     # Download model
     - name: Download production model

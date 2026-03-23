@@ -9,10 +9,16 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
 mlflow.set_tracking_uri(
-    os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5002")
+    os.getenv("MLFLOW_TRACKING_URI", "file:./mlruns")
 ) # match your MLflow UI port
 
-mlflow.set_experiment("ml-cicd-demo")
+experiment_name = "ml-cicd-demo"
+
+exp = mlflow.get_experiment(experiment_name)
+if exp is None:
+    mlflow.create_experiment(experiment_name)
+
+mlflow.set_experiment(experiment_name)
 
 promoted = False
 MODEL_NAME = "ml-cicd-demo"
