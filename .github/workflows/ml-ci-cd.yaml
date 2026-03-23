@@ -22,27 +22,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 🔥 Start MLflow server INSIDE CI
-    - name: Start MLflow server
-      run: |
-        mlflow server \
-          --backend-store-uri sqlite:///mlflow.db \
-          --default-artifact-root ./mlruns \
-          --host 127.0.0.1 \
-          --port 5002 &
-        sleep 5
-
     # 🧠 Train + register model
     - name: Train and register model
       env:
-        MLFLOW_TRACKING_URI: http://127.0.0.1:5002
+        MLFLOW_TRACKING_URI: file:./mlruns
       run: |
         python app/train.py
 
     # Download model
     - name: Download production model
       env:
-        MLFLOW_TRACKING_URI: http://127.0.0.1:5002
+        MLFLOW_TRACKING_URI: file:./mlruns
       run: |
         python app/download_model.py
 
