@@ -46,7 +46,11 @@ jobs:
       run: |
         python app/download_model.py
 
-    # 🐳 Optional: Build Docker image
-    - name: Build Docker image
+    - name: Log in to GHCR
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    
+    - name: Build and push Docker image
       run: |
-        docker build -t ml-api:latest .
+        IMAGE=ghcr.io/${{ github.repository }}/ml-api:latest
+        docker build -t $IMAGE .
+        docker push $IMAGE
