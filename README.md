@@ -73,7 +73,7 @@ uvicorn app.api:app --host 0.0.0.0 --port 8000
 Check the health endpoint:
 
 ```bash
-curl http://localhost:8000/
+curl http://127.0.0.1:8000/
 ```
 
 Expected response:
@@ -82,10 +82,25 @@ Expected response:
 {"status":"ok"}
 ```
 
+OpenAPI docs are available at `http://127.0.0.1:8000/docs`. The server binds to `0.0.0.0`, but clients should connect to `127.0.0.1` or `localhost` on the same computer.
+
+If the request hangs and Uvicorn does not log a `GET /`, another service may already be publishing port 8000. On macOS, check which processes are listening:
+
+```bash
+lsof -nP -iTCP:8000 -sTCP:LISTEN
+```
+
+If Docker and Uvicorn both appear, stop the container publishing port 8000 or run the local API on another port:
+
+```bash
+uvicorn app.api:app --host 0.0.0.0 --port 8001
+curl http://127.0.0.1:8001/
+```
+
 Send one Iris sample to the prediction endpoint. The four features are sepal length, sepal width, petal length, and petal width, in centimeters:
 
 ```bash
-curl -X POST http://localhost:8000/predict \
+curl -X POST http://127.0.0.1:8000/predict \
   -H 'Content-Type: application/json' \
   -d '{"features": [5.1, 3.5, 1.4, 0.2]}'
 ```

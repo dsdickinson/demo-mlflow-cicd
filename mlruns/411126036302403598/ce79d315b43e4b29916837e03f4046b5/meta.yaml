@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/steve/Development/git/demo-mlflow-cicd/mlruns/411126036302403598/ce79d315b43e4b29916837e03f4046b5/artifacts
+end_time: 1794673347277
+entry_point_name: ''
+experiment_id: '411126036302403598'
+lifecycle_stage: active
+run_id: ce79d315b43e4b29916837e03f4046b5
+run_name: exultant-shoat-641
+run_uuid: ce79d315b43e4b29916837e03f4046b5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1794673345877
+status: 3
+tags: []
+user_id: steve

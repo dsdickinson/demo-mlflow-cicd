@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1794673347275
+current_stage: Production
+description: null
+last_updated_timestamp: 1794673347278
+name: demo-mlflow-cicd
+run_id: ce79d315b43e4b29916837e03f4046b5
+run_link: null
+source: file:///Users/steve/Development/git/demo-mlflow-cicd/mlruns/411126036302403598/ce79d315b43e4b29916837e03f4046b5/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/steve/Development/git/demo-mlflow-cicd/mlruns/411126036302403598/ce79d315b43e4b29916837e03f4046b5/artifacts/model
+user_id: null
+version: 1
