@@ -1,7 +1,7 @@
 import os
 import mlflow
 
-MODEL_NAME = "ml-cicd-demo"
+MODEL_NAME = "demo-mlflow-cicd"
 MODEL_STAGE = "Production"
 
 tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5002")

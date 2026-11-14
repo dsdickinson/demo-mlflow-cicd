@@ -1,2 +1,2 @@
-model_name: ml-cicd-demo
+model_name: demo-mlflow-cicd
 model_version: '1'

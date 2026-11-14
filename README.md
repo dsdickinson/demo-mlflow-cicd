@@ -25,7 +25,7 @@ FastAPI serves health and prediction endpoints on port 8000
 Kubernetes runs two API replicas behind a LoadBalancer Service
 ```
 
-The training data is scikit-learn's built-in Iris dataset. `app/train.py` fits a `RandomForestClassifier` with 100 trees and logs its test accuracy and `n_estimators` value to MLflow. The model is registered as `ml-cicd-demo`. The first trained model is promoted to Production; later versions are promoted only when their measured accuracy is higher than the current Production version.
+The training data is scikit-learn's built-in Iris dataset. `app/train.py` fits a `RandomForestClassifier` with 100 trees and logs its test accuracy and `n_estimators` value to MLflow. The experiment and registered model are named `demo-mlflow-cicd`. The first trained model is promoted to Production; later versions are promoted only when their measured accuracy is higher than the current Production version.
 
 ## Requirements
 
@@ -50,7 +50,7 @@ Train and register a model:
 python app/train.py
 ```
 
-By default, MLflow uses the local `./mlruns` file store. To use another tracking store, set `MLFLOW_TRACKING_URI` before running the script. The training script creates the `ml-cicd-demo` experiment each time, so use a fresh tracking store when starting a new local run unless that experiment-creation behavior has been adjusted.
+By default, MLflow uses the local `./mlruns` file store. To use another tracking store, set `MLFLOW_TRACKING_URI` before running the script. The training script creates the `demo-mlflow-cicd` experiment each time, so use a fresh tracking store when starting a new local run unless that experiment-creation behavior has been adjusted.
 
 ### Prepare the model for serving
 
@@ -115,7 +115,7 @@ The workflow builds and publishes the image. It does not deploy the Kubernetes m
 
 ## Deploy to Kubernetes
 
-The manifests in `k8s/` create a Deployment with two replicas and a `LoadBalancer` Service that forwards port 80 to container port 8000. The Deployment references `ghcr.io/dsdickinson/ml-cicd-demo/ml-api:latest` and expects an image pull secret named `gh-regcred`.
+The manifests in `k8s/` create a Deployment with two replicas and a `LoadBalancer` Service that forwards port 80 to container port 8000. The Deployment references `ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest` and expects an image pull secret named `gh-regcred`.
 
 For a private GHCR package, create the pull secret using a GitHub username and a personal access token with package read access:
 

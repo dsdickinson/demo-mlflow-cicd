@@ -1,4 +1,4 @@
-artifact_path: /Users/steve/Development/git/ml-cicd-demo/mlruns/1/models/m-d72af161ca0e4ad7a6c5f6ab659388ab/artifacts
+artifact_path: /Users/steve/Development/git/demo-mlflow-cicd/mlruns/1/models/m-d72af161ca0e4ad7a6c5f6ab659388ab/artifacts
 flavors:
   python_function:
     env:

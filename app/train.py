@@ -12,14 +12,14 @@ mlflow.set_tracking_uri(
     os.getenv("MLFLOW_TRACKING_URI", "file:./mlruns")
 ) # match your MLflow UI port
 
-experiment_name = "ml-cicd-demo"
+experiment_name = "demo-mlflow-cicd"
 
 mlflow.create_experiment(experiment_name)
 
 mlflow.set_experiment(experiment_name)
 
 promoted = False
-MODEL_NAME = "ml-cicd-demo"
+MODEL_NAME = "demo-mlflow-cicd"
 
 X, y = load_iris(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)

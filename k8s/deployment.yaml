@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ml-api
-        image: ghcr.io/dsdickinson/ml-cicd-demo/ml-api:latest
+        image: ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest
         ports:
         - containerPort: 8000
       imagePullSecrets:
