@@ -113,10 +113,10 @@ The Docker image includes the API code and `model/` directory. Build and run it 
 
 ```bash
 docker build -t ml-api:local .
-docker run --rm -p 8000:8000 ml-api:local
+docker run --rm -p 8001:8000 ml-api:local
 ```
 
-Then use the same `/` and `/predict` requests shown above.
+The container listens on port 8000; the command maps host port 8001 to it. Use `http://127.0.0.1:8001/` and `http://127.0.0.1:8001/predict` from the host.
 
 ## CI/CD workflow
 
@@ -128,17 +128,69 @@ ghcr.io/<owner>/<repository>/ml-api:latest
 
 The workflow builds and publishes the image. It does not deploy the Kubernetes manifests or update a running cluster.
 
+### Publish a multi-platform image to GHCR
+
+The workflow above builds for the GitHub Actions runner's platform. To publish an image that can be pulled on both Intel/AMD64 and ARM64 machines, use Docker Buildx from the repository root.
+
+Create a **personal access token (classic)** in GitHub under **Settings → Developer settings → Personal access tokens → Tokens (classic)**. A token with `read:packages` can pull but cannot publish. For `docker buildx build --push`, select `write:packages`; it allows both publishing and pulling, so a separate `read:packages` scope is unnecessary. Do not grant `delete:packages` unless you need to delete package versions. Your GitHub account must also have write access to the package; authorize the token for the organization if it requires SSO. GitHub Packages container registry authentication requires a classic token. [GitHub's GHCR documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) describes these scopes.
+
+For a token that can both publish and pull, [start token creation with `write:packages`](https://github.com/settings/tokens/new?scopes=write:packages). Keep the token private. Read it into the current shell without echoing it or placing it in shell history:
+
+```bash
+printf 'Paste the token, then press Enter: '
+read -s -r GHCR_TOKEN
+printf '\n'
+export GHCR_TOKEN
+```
+
+Log in to GHCR:
+
+```bash
+printf '%s' "$GHCR_TOKEN" | docker login ghcr.io \
+  --username YOUR_GITHUB_USERNAME \
+  --password-stdin
+```
+
+If you replace or update the token, clear Docker's cached GHCR credentials before logging in again:
+
+```bash
+docker logout ghcr.io
+printf '%s' "$GHCR_TOKEN" | docker login ghcr.io \
+  --username YOUR_GITHUB_USERNAME \
+  --password-stdin
+```
+
+The default Buildx `docker` driver cannot publish multi-platform images. Create and select a builder using the `docker-container` driver once:
+
+```bash
+docker buildx create --name demo-mlflow-cicd-builder \
+  --driver docker-container --use --bootstrap
+```
+
+For later sessions, select that builder with `docker buildx use demo-mlflow-cicd-builder`. Build and push both architectures:
+
+```bash
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  --tag ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest \
+  --push .
+```
+
+With the `docker-container` driver, `--push` publishes the multi-platform image to GHCR; it does not load that image into the local Docker image store. Verify a pull with `docker pull ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest`. Remove the token from the shell when finished with `unset GHCR_TOKEN`. Docker's [multi-platform build guide](https://docs.docker.com/build/building/multi-platform/) explains the builder options.
+
+The existing GitHub Actions workflow uses its built-in `GITHUB_TOKEN` with `packages: write`; it does not need the local `GHCR_TOKEN`.
+
 ## Deploy to Kubernetes
 
 The manifests in `k8s/` create a Deployment with two replicas and a `LoadBalancer` Service that forwards port 80 to container port 8000. The Deployment references `ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest` and expects an image pull secret named `gh-regcred`.
 
-For a private GHCR package, create the pull secret using a GitHub username and a personal access token with package read access:
+For a private GHCR package, create the pull secret using your GitHub username and `GHCR_TOKEN` with at least `read:packages` access (a token with `write:packages` also works):
 
 ```bash
 kubectl create secret docker-registry gh-regcred \
   --docker-server=ghcr.io \
-  --docker-username=<github-username> \
-  --docker-password=<github-token>
+  --docker-username=YOUR_GITHUB_USERNAME \
+  --docker-password="$GHCR_TOKEN"
 ```
 
 Apply the resources:
