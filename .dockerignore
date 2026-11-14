@@ -1,0 +1,8 @@
+.venv/
+.git/
+.codex/
+openspec/
+mlruns/
+mlflow.db
+__pycache__/
+*.py[cod]
