@@ -201,7 +201,33 @@ kubectl apply -f k8s/service.yaml
 kubectl get service ml-api-service
 ```
 
-When the LoadBalancer has an external address, send the health and prediction requests to that address (port 80). If your GHCR image path differs from the one in the manifest, update the Deployment image before applying it. `k8s/secret.yaml` contains the `kubectl create secret` command as a template; it is not a Kubernetes Secret YAML manifest.
+### Accessing the API
+
+When the LoadBalancer has an external address (such as on a cloud provider with an external load balancer), send requests directly to that address on port 80.
+
+In local clusters (such as Minikube, kind, or Docker Desktop), the `EXTERNAL-IP` may remain `<pending>`. You can access the service locally using port forwarding:
+
+```bash
+kubectl port-forward svc/ml-api-service 8080:80
+```
+
+> **Note:** `kubectl port-forward` runs in the foreground and maps local port 8080 directly to the Pod's container port 8000 (`targetPort`). Keep this command running and execute requests from another terminal.
+
+Verify the service health:
+
+```bash
+curl http://127.0.0.1:8080/
+```
+
+Send a prediction request:
+
+```bash
+curl -X POST http://127.0.0.1:8080/predict \
+  -H 'Content-Type: application/json' \
+  -d '{"features": [5.1, 3.5, 1.4, 0.2]}'
+```
+
+If your GHCR image path differs from the one in the manifest, update the Deployment image before applying it. `k8s/secret.yaml` contains the `kubectl create secret` command as a template; it is not a Kubernetes Secret YAML manifest.
 
 ## Repository map
 
