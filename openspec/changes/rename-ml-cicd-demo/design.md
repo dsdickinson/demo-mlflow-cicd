@@ -18,7 +18,7 @@ The repository uses `ml-cicd-demo` as its MLflow experiment and registered model
 
 - Update maintained source, deployment configuration, docs, ignore rules, and checked-in model metadata. This keeps the runnable project aligned without rewriting append-only tracking history.
 - Use `demo-mlflow-cicd` for both the MLflow experiment and registered model name. This matches the established project identity and keeps the training and download scripts aligned.
-- Update the Kubernetes image path to `ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest`, matching the repository name reflected by this workspace. Keep the `ml-api:latest` image name and tag unchanged.
+- Update the Kubernetes image path to `ghcr.io/<owner>/demo-mlflow-cicd/ml-api:latest`, matching the repository name reflected by this workspace. Keep the `ml-api:latest` image name and tag unchanged.
 - Leave old names found only in MLflow history untouched. Those entries represent prior runs and remain valid historical records; new pipeline runs use the new registered model name.
 
 ## Risks / Trade-offs

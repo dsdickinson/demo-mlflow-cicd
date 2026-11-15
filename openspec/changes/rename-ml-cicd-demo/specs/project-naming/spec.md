@@ -9,7 +9,7 @@ The application and maintained repository configuration SHALL use `demo-mlflow-c
 
 #### Scenario: Build and deploy the project image
 - **WHEN** the documented CI image is deployed using the Kubernetes manifest
-- **THEN** the documentation and manifest identify the image repository as `ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api`
+- **THEN** the documentation and manifest identify the image repository as `ghcr.io/<owner>/demo-mlflow-cicd/ml-api`
 
 ### Requirement: Preserve historical MLflow tracking records
 The rename SHALL NOT rewrite historical MLflow run records, version records, or tracking database contents that refer to `ml-cicd-demo`.

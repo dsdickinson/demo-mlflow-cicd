@@ -190,17 +190,17 @@ For later sessions, select that builder with `docker buildx use demo-mlflow-cicd
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --tag ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest \
+  --tag ghcr.io/<owner>/demo-mlflow-cicd/ml-api:latest \
   --push .
 ```
 
-With the `docker-container` driver, `--push` publishes the multi-platform image to GHCR; it does not load that image into the local Docker image store. Verify a pull with `docker pull ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest`. Remove the token from the shell when finished with `unset GHCR_TOKEN`. Docker's [multi-platform build guide](https://docs.docker.com/build/building/multi-platform/) explains the builder options.
+With the `docker-container` driver, `--push` publishes the multi-platform image to GHCR; it does not load that image into the local Docker image store. Verify a pull with `docker pull ghcr.io/<owner>/demo-mlflow-cicd/ml-api:latest`. Remove the token from the shell when finished with `unset GHCR_TOKEN`. Docker's [multi-platform build guide](https://docs.docker.com/build/building/multi-platform/) explains the builder options.
 
 The existing GitHub Actions workflow uses its built-in `GITHUB_TOKEN` with `packages: write`; it does not need the local `GHCR_TOKEN`.
 
 ## Deploy to Kubernetes
 
-The manifests in `k8s/` create a Deployment with two replicas and a `LoadBalancer` Service that forwards port 80 to container port 8000. The Deployment references `ghcr.io/dsdickinson/demo-mlflow-cicd/ml-api:latest` and expects an image pull secret named `gh-regcred`.
+The manifests in `k8s/` create a Deployment with two replicas and a `LoadBalancer` Service that forwards port 80 to container port 8000. The Deployment references `ghcr.io/<owner>/demo-mlflow-cicd/ml-api:latest` and expects an image pull secret named `gh-regcred`.
 
 For a private GHCR package, create the pull secret using your GitHub username and `GHCR_TOKEN` with at least `read:packages` access (a token with `write:packages` also works):
 
