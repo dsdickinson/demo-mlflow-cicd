@@ -1,6 +1,0 @@
-artifact_location: file:///Users/steve/Development/git/demo-mlflow-cicd/mlruns/411126036302403598
-creation_time: 1794673345795
-experiment_id: '411126036302403598'
-last_update_time: 1794673345795
-lifecycle_stage: active
-name: demo-mlflow-cicd

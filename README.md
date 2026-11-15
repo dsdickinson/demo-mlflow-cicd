@@ -52,6 +52,24 @@ python app/train.py
 
 By default, MLflow uses the local `./mlruns` file store. To use another tracking store, set `MLFLOW_TRACKING_URI` before running the script. The training script creates the `demo-mlflow-cicd` experiment each time, so use a fresh tracking store when starting a new local run unless that experiment-creation behavior has been adjusted.
 
+### View the MLflow UI
+
+To inspect experiments, run metrics, and registered model versions in the browser (make sure your virtual environment is active):
+
+```bash
+source .venv/bin/activate
+mlflow ui --backend-store-uri ./mlruns --port 5002
+```
+
+Navigate to `http://127.0.0.1:5002` in your browser.
+
+> **Note for macOS:** By default, MLflow runs on port 5000, which macOS commonly reserves for AirPlay Receiver. Specifying `--port 5002` avoids port collisions.
+>
+> If you logged runs to SQLite (`mlflow.db`) instead of the local file directory, start the UI with:
+> ```bash
+> mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns --port 5002
+> ```
+
 ### Prepare the model for serving
 
 The API loads an MLflow model from the repository's `model/` directory. To replace that directory with the Production model from the local file store, run:
