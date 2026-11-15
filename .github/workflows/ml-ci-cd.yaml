@@ -3,6 +3,14 @@ name: ML CI/CD Pipeline
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "app/**"
+      - "model/**"
+      - "Dockerfile"
+      - "requirements.txt"
+      - ".dockerignore"
+      - ".github/workflows/ml-ci-cd.yaml"
+  workflow_dispatch:
 
 jobs:
   train-and-register:
